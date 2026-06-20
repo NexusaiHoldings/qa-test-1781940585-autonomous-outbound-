@@ -230,19 +230,25 @@ export async function handleEnrichProspectProfile(
   }
 
   // Fetch existing prospect row to get email + company domain.
-  const prospectRow = await ctx.db.query(
+  const prospectRows = await ctx.db.query<{
+    id: string;
+    email: string | null;
+    company_name: string | null;
+    company_domain: string | null;
+    linkedin_url: string | null;
+  }>(
     `SELECT id, email, company_name, company_domain, linkedin_url
      FROM sdr_prospects
      WHERE id = $1
      LIMIT 1`,
-    [prospectId],
+    prospectId,
   );
 
-  if (!prospectRow || prospectRow.rows.length === 0) {
+  if (!prospectRows || prospectRows.length === 0) {
     return { status: 404, body: `Prospect ${prospectId} not found` };
   }
 
-  const prospect = prospectRow.rows[0] as {
+  const prospect = prospectRows[0] as {
     id: string;
     email: string | null;
     company_name: string | null;
@@ -291,16 +297,17 @@ export async function handleEnrichProspectProfile(
     enrichment_version: 1,
   };
 
-  await ctx.db.query(
+  await ctx.db.execute(
     `UPDATE sdr_prospects
      SET enriched_profile = $2::jsonb,
          enriched_at      = NOW(),
          updated_at       = NOW()
      WHERE id = $1`,
-    [prospectId, JSON.stringify(enrichedPayload)],
+    prospectId,
+    JSON.stringify(enrichedPayload),
   );
 
-  await ctx.events.emit("prospect.enriched", {
+  await ctx.events.publish("prospect.enriched", {
     prospect_id: prospectId,
     company_name: prospect.company_name,
     icp_signals: icpSignals,

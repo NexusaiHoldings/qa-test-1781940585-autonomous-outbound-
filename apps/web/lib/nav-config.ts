@@ -1,16 +1,24 @@
 export const NAV_CONFIG = {
   primary: [
-    { label: "Home", href: "/", icon: "Home" },
-    { label: "Campaigns", href: "/campaigns", icon: "Megaphone" },
-    { label: "Prospects", href: "/prospects", icon: "Users" },
-    { label: "Pipeline", href: "/pipeline", icon: "BarChart3" },
+    { href: "/", label: "Home" },
+    { href: "/campaigns", label: "Campaigns" },
+    { href: "/prospects", label: "Prospects" },
+    { href: "/pipeline", label: "Pipeline" },
   ],
   groups: [
     {
+      label: "Operations",
+      items: [
+        { href: "/campaigns", label: "Campaigns" },
+        { href: "/prospects", label: "Prospects" },
+        { href: "/pipeline", label: "Pipeline" },
+      ],
+    },
+    {
       label: "Settings",
       items: [
-        { label: "Sending", href: "/settings/sending", icon: "Mail" },
-        { label: "ICP", href: "/settings/icp", icon: "Target" },
+        { href: "/settings/sending", label: "Sending" },
+        { href: "/settings/icp", label: "Ideal Customer Profile" },
       ],
     },
   ],

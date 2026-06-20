@@ -5,6 +5,7 @@
  * Server component — no 'use client' needed; data is fetched at render time.
  */
 
+import type { CSSProperties } from "react";
 import {
   getPool,
   ensureSchema,
@@ -23,18 +24,24 @@ const CLASSIFICATION_LABELS: Record<string, string> = {
   legal_threat: "Legal Threat",
 };
 
-function classificationBadgeStyle(classification: string | null): string {
+const BASE_BADGE: CSSProperties = {
+  padding: "2px 8px",
+  borderRadius: "4px",
+  fontSize: "0.8em",
+};
+
+function classificationBadgeStyle(classification: string | null): CSSProperties {
   switch (classification) {
     case "interested":
-      return "color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600;";
+      return { ...BASE_BADGE, color: "#166534", background: "#dcfce7", fontWeight: 600 };
     case "objection":
-      return "color: #92400e; background: #fef3c7; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600;";
+      return { ...BASE_BADGE, color: "#92400e", background: "#fef3c7", fontWeight: 600 };
     case "unsubscribe":
-      return "color: #374151; background: #f3f4f6; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600;";
+      return { ...BASE_BADGE, color: "#374151", background: "#f3f4f6", fontWeight: 600 };
     case "legal_threat":
-      return "color: #991b1b; background: #fee2e2; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600;";
+      return { ...BASE_BADGE, color: "#991b1b", background: "#fee2e2", fontWeight: 600 };
     default:
-      return "color: #6b7280; background: #f9fafb; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;";
+      return { ...BASE_BADGE, color: "#6b7280", background: "#f9fafb" };
   }
 }
 

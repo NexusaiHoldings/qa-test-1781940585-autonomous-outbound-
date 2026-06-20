@@ -34,10 +34,7 @@ import type { Pool } from "pg";
 function makeDbAdapter(pool: Pool): Db {
   return {
     async query<T>(sql: string, ...params: unknown[]): Promise<T[]> {
-      const res = await pool.query<T & Record<string, unknown>>(
-        sql,
-        params.length > 0 ? params : undefined
-      );
+      const res = await pool.query(sql, params.length > 0 ? params : undefined);
       return res.rows as T[];
     },
     async execute(sql: string, ...params: unknown[]): Promise<void> {

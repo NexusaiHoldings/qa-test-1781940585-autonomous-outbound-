@@ -24,6 +24,8 @@
  */
 
 import type { HandlerContext, HandlerResult } from "@nexus/identity-and-access";
+import { handleEnrichProspectProfile } from "./enrich_prospect_profile";
+import { handleBookCalendarMeeting } from "./book_calendar_meeting";
 
 type Args = Record<string, unknown>;
 
@@ -32,4 +34,6 @@ export const DOMAIN_DISPATCH: Record<
   (ctx: HandlerContext, args: Args) => Promise<HandlerResult>
 > = {
   // Build agent appends entries here per CTO-declared new_domain_tool.
+  enrich_prospect_profile: (ctx, a) => handleEnrichProspectProfile(ctx, a),
+  book_calendar_meeting: (ctx, a) => handleBookCalendarMeeting(ctx, a),
 };
